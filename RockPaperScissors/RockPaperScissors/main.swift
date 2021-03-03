@@ -8,7 +8,7 @@ import Foundation
 
 
 class RockPaperScissors {
-
+    
     var attackingTurn: String = "사용자"
     let rockPaperScissorsGameMessage: [String] = ["이겼습니다!", "졌습니다!", "비겼습니다!"]
     let mukchipaGameMessage: [String] = ["의 턴입니다", "의 승리!"]
@@ -17,6 +17,7 @@ class RockPaperScissors {
     
     private func playGame(with userChoice: Int, on gameMode: Bool) {
         let randomComputerChoice: Int = Int.random(in: 1...3)
+        print(randomComputerChoice)
         let criterion: Int = (userChoice - randomComputerChoice + 3) % 3
         if criterion == 1 {
             if gameMode {
@@ -25,23 +26,27 @@ class RockPaperScissors {
                 print("[\(attackingTurn) 턴]", terminator: " ")
                 startGame(on: mukchipaMode)
             }
-            else{
-                if attackingTurn == "컴퓨터" {
-                    attackingTurn = "사용자"
+            else {
+                if attackingTurn == "사용자" {
+                    attackingTurn = "컴퓨터"
                     print(attackingTurn + mukchipaGameMessage[0])
                 }
+                print("[\(attackingTurn) 턴]", terminator: " ")
+                startGame(on: mukchipaMode)
             }
         } else if criterion == 2 {
-            if gameMode{
+            if gameMode {
                 print("졌습니다!")
                 attackingTurn = "컴퓨터"
                 print("[\(attackingTurn) 턴]", terminator: " ")
                 startGame(on: mukchipaMode)
             } else {
-                if attackingTurn == "사용자" {
-                    attackingTurn = "컴퓨터"
+                if attackingTurn == "컴퓨터" {
+                    attackingTurn = "사용자"
                     print(attackingTurn + mukchipaGameMessage[0])
                 }
+                print("[\(attackingTurn) 턴]", terminator: " ")
+                startGame(on: mukchipaMode)
             }
         } else {
             if gameMode {
@@ -82,8 +87,10 @@ class RockPaperScissors {
         if !gameMode {
             if self.attackingTurn == "사용자" {
                 self.attackingTurn = "컴퓨터"
+                print("[\(attackingTurn) 턴]", terminator: " ")
             } else {
                 self.attackingTurn = "사용자"
+                print("[\(attackingTurn) 턴]", terminator: " ")
             }
         }
         startGame(on: gameMode)
@@ -98,7 +105,7 @@ class RockPaperScissors {
                 restartGame(on: gameMode)
             }
         }
-        }
+    }
     
     func startGame(on gameMode: Bool) {
         if gameMode {
