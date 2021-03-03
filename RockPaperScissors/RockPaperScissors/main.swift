@@ -19,21 +19,29 @@ class RockPaperScissors {
         let randomComputerChoice: Int = Int.random(in: 1...3)
         let criterion: Int = (userChoice - randomComputerChoice + 3) % 3
         if criterion == 1 {
-            if gameMode { // 가위 바위 보
+            if gameMode {
                 print("이겼습니다!")
-                // 묵찌빠 게임 시작 (사용자 턴) !gameMode
                 attackingTurn = "사용자"
+                print("[\(attackingTurn) 턴]", terminator: " ")
                 startGame(on: mukchipaMode)
             }
-            else{ // 묵찌빠
-                // 묵찌빠 게임 playGame(userChoice, gameMode)
+            else{
+                if attackingTurn == "컴퓨터" {
+                    attackingTurn = "사용자"
+                    print(attackingTurn + mukchipaGameMessage[0])
+                }
             }
         } else if criterion == 2 {
             if gameMode{
                 print("졌습니다!")
-                // 묵찌빠 게임 시작 (컴퓨터 턴)
                 attackingTurn = "컴퓨터"
+                print("[\(attackingTurn) 턴]", terminator: " ")
                 startGame(on: mukchipaMode)
+            } else {
+                if attackingTurn == "사용자" {
+                    attackingTurn = "컴퓨터"
+                    print(attackingTurn + mukchipaGameMessage[0])
+                }
             }
         } else {
             if gameMode {
@@ -44,14 +52,6 @@ class RockPaperScissors {
             }
         }
     }
-    
-//    private func playMukchipaGame(with attackerTurn: String) {
-//        // [~ 턴] 묵 찌 빠 ~ 입력 받기
-//        // 잘못된 입력일 때
-//            // 턴을 바꿔서 묵찌빠 게임 다시 진행
-//        // 제대로 된 입력일 때
-//            //
-//    }
     
     private func decideGameOption(with convertedUserSelection: Int, on gameMode: Bool) {
         if (1...3).contains(convertedUserSelection) {
