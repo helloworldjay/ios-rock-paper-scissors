@@ -7,24 +7,48 @@
 import Foundation
 
 
-struct RockScissorsPaper {
+struct RockPaperScissors {
     
-    private func playRockScissorsPaper(with userChoice: Int) {
-        let randomRockScissorsPaperChoice: Int = Int.random(in: 1...3)
-        let criterion: Int = (userChoice - randomRockScissorsPaperChoice + 3) % 3
+    let userAttackingTurn: String = "사용자"
+    let computerAttackingTurn: String = "컴퓨터"
+    let rockPaperScissorsGameMessage: [String] = ["이겼습니다!", "졌습니다!", "비겼습니다!"]
+    let mukchipaGameMessage: [String] = ["의 턴입니다", "의 승리!"]
+    let rockPaperScissorsMode: Bool = true
+    let mukchipaMode: Bool = false
+    
+    private func playGame(with userChoice: Int, on gameMode: Bool) {
+        let randomComputerChoice: Int = Int.random(in: 1...3)
+        let criterion: Int = (userChoice - randomComputerChoice + 3) % 3
         if criterion == 1 {
-            print("이겼습니다!")
+            if gameMode { // 가위 바위 보
+                print("이겼습니다!")
+                // 묵찌빠 게임 시작 (사용자 턴) !gameMode
+            }
+            else{ // 묵찌빠
+                // 묵찌빠 게임 playGame(userChoice, gameMode)
+            }
         } else if criterion == 2 {
-            print("졌습니다!")
+            if gameMode{
+                print("졌습니다!")
+                // 묵찌빠 게임 시작 (컴퓨터 턴)
+            }
         } else {
             print("비겼습니다!")
             startGame()
         }
     }
     
+    private func playMukchipaGame(with attackerTurn: String) {
+        // [~ 턴] 묵 찌 빠 ~ 입력 받기
+        // 잘못된 입력일 때
+            // 턴을 바꿔서 묵찌빠 게임 다시 진행
+        // 제대로 된 입력일 때
+            //
+    }
+    
     private func decideGameOption(with convertedUserSelection: Int) {
         if (1...3).contains(convertedUserSelection) {
-            playRockScissorsPaper(with: convertedUserSelection)
+            playGame(with: convertedUserSelection, on: rockPaperScissorsMode)
         }
     }
     
@@ -68,5 +92,5 @@ struct RockScissorsPaper {
     }
 }
 
-let newGame = RockScissorsPaper()
+let newGame = RockPaperScissors()
 newGame.startGame()
