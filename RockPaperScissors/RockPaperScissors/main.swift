@@ -9,48 +9,52 @@ import Foundation
 
 class RockPaperScissors {
     
-    var attackingTurn: String = "사용자"
+    var attackingTurn: String = ""
+    let computer: String = "컴퓨터"
+    let user: String = "사용자"
     let rockPaperScissorsGameMessage: [String] = ["이겼습니다!", "졌습니다!", "비겼습니다!"]
     let mukchipaGameMessage: [String] = ["의 턴입니다", "의 승리!"]
     let rockPaperScissorsMode: Bool = true
     let mukchipaMode: Bool = false
+    let wrongInputMessage: String = "잘못된 입력입니다. 다시 시도해주세요."
+    let rockPaperScissorsInputMessage: String = "가위(1), 바위(2), 보(3)! <종료:0> : "
+    let mukchipaInputMessage: String = "묵(1), 찌(2), 빠(3)! <종료:0> : "
+    
+    private func changeAttackingTurn() {
+        if attackingTurn == computer {
+            attackingTurn = user
+        } else if attackingTurn == user {
+            attackingTurn = computer
+        }
+    }
+    
+    private func controlGame(_ gameMode: Bool, _ gameMessageNumber: Int, _ currentAttacker: String) {
+        if gameMode {
+            print(rockPaperScissorsGameMessage[gameMessageNumber])
+            attackingTurn = currentAttacker
+            print("[\(attackingTurn) 턴]", terminator: " ")
+            startGame(on: mukchipaMode)
+        }
+        else {
+            if attackingTurn == currentAttacker {
+                changeAttackingTurn()
+                print(attackingTurn + mukchipaGameMessage[0])
+            }
+            print("[\(attackingTurn) 턴]", terminator: " ")
+            startGame(on: mukchipaMode)
+        }
+    }
     
     private func playGame(with userChoice: Int, on gameMode: Bool) {
         let randomComputerChoice: Int = Int.random(in: 1...3)
-        print(randomComputerChoice)
         let criterion: Int = (userChoice - randomComputerChoice + 3) % 3
         if criterion == 1 {
-            if gameMode {
-                print("이겼습니다!")
-                attackingTurn = "사용자"
-                print("[\(attackingTurn) 턴]", terminator: " ")
-                startGame(on: mukchipaMode)
-            }
-            else {
-                if attackingTurn == "사용자" {
-                    attackingTurn = "컴퓨터"
-                    print(attackingTurn + mukchipaGameMessage[0])
-                }
-                print("[\(attackingTurn) 턴]", terminator: " ")
-                startGame(on: mukchipaMode)
-            }
+            controlGame(gameMode, 0, user)
         } else if criterion == 2 {
-            if gameMode {
-                print("졌습니다!")
-                attackingTurn = "컴퓨터"
-                print("[\(attackingTurn) 턴]", terminator: " ")
-                startGame(on: mukchipaMode)
-            } else {
-                if attackingTurn == "컴퓨터" {
-                    attackingTurn = "사용자"
-                    print(attackingTurn + mukchipaGameMessage[0])
-                }
-                print("[\(attackingTurn) 턴]", terminator: " ")
-                startGame(on: mukchipaMode)
-            }
+            controlGame(gameMode, 1, computer)
         } else {
             if gameMode {
-                print("비겼습니다!")
+                print(rockPaperScissorsGameMessage[2])
                 startGame(on: gameMode)
             } else {
                 print(attackingTurn+mukchipaGameMessage[1])
@@ -58,19 +62,24 @@ class RockPaperScissors {
         }
     }
     
+    private func restartGame(on gameMode: Bool) {
+        print(wrongInputMessage)
+        if !gameMode {
+            if attackingTurn == user {
+                attackingTurn = computer
+                print("[\(attackingTurn) 턴]", terminator: " ")
+            } else {
+                attackingTurn = user
+                print("[\(attackingTurn) 턴]", terminator: " ")
+            }
+        }
+        startGame(on: gameMode)
+    }
+    
     private func decideGameOption(with convertedUserSelection: Int, on gameMode: Bool) {
         if (1...3).contains(convertedUserSelection) {
             playGame(with: convertedUserSelection, on: gameMode)
         }
-    }
-    
-    private func checkValidation(_ userSelection: String) -> Bool {
-        if let selection = Int(userSelection) {
-            if (0...3).contains(selection) {
-                return true
-            }
-        }
-        return false
     }
     
     private func convert(_ userSelection: String) -> Int {
@@ -82,18 +91,13 @@ class RockPaperScissors {
         }
     }
     
-    private func restartGame(on gameMode: Bool) {
-        print("잘못된 입력입니다. 다시 시도해주세요.")
-        if !gameMode {
-            if self.attackingTurn == "사용자" {
-                self.attackingTurn = "컴퓨터"
-                print("[\(attackingTurn) 턴]", terminator: " ")
-            } else {
-                self.attackingTurn = "사용자"
-                print("[\(attackingTurn) 턴]", terminator: " ")
+    private func checkValidation(_ userSelection: String) -> Bool {
+        if let selection = Int(userSelection) {
+            if (0...3).contains(selection) {
+                return true
             }
         }
-        startGame(on: gameMode)
+        return false
     }
     
     private func getUserSelection(on gameMode: Bool) {
@@ -109,9 +113,9 @@ class RockPaperScissors {
     
     func startGame(on gameMode: Bool) {
         if gameMode {
-            print("가위(1), 바위(2), 보(3)! <종료:0> : ", terminator: "")
+            print(rockPaperScissorsInputMessage, terminator: "")
         } else {
-            print("묵(1), 찌(2), 빠(3)! <종료:0> : ", terminator: "")
+            print(mukchipaInputMessage, terminator: "")
         }
         getUserSelection(on: gameMode)
     }
