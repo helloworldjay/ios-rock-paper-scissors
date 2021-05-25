@@ -7,28 +7,38 @@
 
 import Foundation
 
-class RockPaperScissors {
-    var userSelect: String = ""
-    var computerHand: Int = 2
-    var userHand: Int = 2
+class RockPaperScissor {
+    var userSelect = ""
+    var computerHand = 0
+    var userHand = 0
+    var changeUserHand = 0
     
-    enum HandShape: Int {
+    enum HandType: Int {
         case scissors = 1
         case rock = 2
         case paper = 3
     }
     
-    enum GameResultMessage: String {
+    enum GameResultMessage: String, CustomStringConvertible {
         case draw = "비겼습니다!"
         case win = "이겼습니다!"
         case lose = "졌습니다!"
         case endGame = "게임 종료"
         case inputError = "잘못된 입력입니다. 다시 시도해주세요."
+        
+        var description: String {
+            return "\(self.rawValue)"
+        }
     }
     
     private func endGame() {
-        print(GameResultMessage.endGame.rawValue)
-        exit(0)
+        print(GameResultMessage.endGame)
+        return
+    }
+    
+    private func restartGame() {
+        print(GameResultMessage.inputError)
+        startGame()
     }
     
     private func randomComputerHand() -> Int {
@@ -36,44 +46,47 @@ class RockPaperScissors {
         return computerHand
     }
     
-    private func inputUserHand() -> Int {
-        if readLine() != nil {
-        }
-        return Int(userHand)
-    }
-    
-    private func resultGame(computerHand: Int, userHand: Int) {
+    private func runTheGame(computerHand: Int, userHand: Int) {
         
-        let result = computerHand - userHand
+        let result = (3 + userHand - computerHand) % 3
         
-        switch result {
-        case 2, -1:
-            print(GameResultMessage.win.rawValue)
-        case 1, -2:
-            print(GameResultMessage.lose.rawValue)
-        default:
-            print(GameResultMessage.draw.rawValue)
-            startGame()
+        if result == 1 {
+            print(GameResultMessage.win)
+        } else if result == 2 {
+            print(GameResultMessage.lose)
+        } else {
+            print(GameResultMessage.draw)
         }
     }
     
-    private func gamelaunch() {
-        
-        switch userHand {
-        case 1...3:
-            resultGame(computerHand: randomComputerHand(), userHand: inputUserHand())
-        case 0:
-            endGame()
-        default:
-            print(GameResultMessage.inputError.rawValue)
+    // 사용자 입력을 받아서, String 값을 Int로 변환후 반환
+    private func getUserHand() -> Int {
+        if let userHand = readLine() {
+            if let changeUserHand = Int(userHand) {
+               gameCase(with: changeUserHand)
+            }else {
+                restartGame()
+            }
         }
+        return changeUserHand
+    }
+    
+    // 입력값 타입별 분류
+    private func gameCase(with changeUserHand: Int) {
+            if 1..<4 ~= changeUserHand {
+                runTheGame(computerHand: randomComputerHand(), userHand: changeUserHand)
+            } else if changeUserHand == 0 {
+                endGame()
+            } else {
+                restartGame()
+            }
     }
 
     func startGame() {
         print("가위(1), 바위(2), 보(3)! <종료:0> : ", terminator: "")
-        gamelaunch()
+        getUserHand()
     }
 }
 
-var game = RockPaperScissors()
+let game = RockPaperScissor()
 game.startGame()
