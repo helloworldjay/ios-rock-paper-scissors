@@ -56,6 +56,7 @@ class RockPaperScissor {
             print(GameResultMessage.lose)
         } else {
             print(GameResultMessage.draw)
+            startGame()
         }
     }
     
@@ -73,13 +74,13 @@ class RockPaperScissor {
     
     // 입력값 타입별 분류
     private func gameCase(with changeUserHand: Int) {
-            if 1..<4 ~= changeUserHand {
-                runTheGame(computerHand: randomComputerHand(), userHand: changeUserHand)
-            } else if changeUserHand == 0 {
-                endGame()
-            } else {
-                restartGame()
-            }
+        if 1..<4 ~= changeUserHand {
+            runTheGame(computerHand: randomComputerHand(), userHand: changeUserHand)
+        } else if changeUserHand == 0 {
+            endGame()
+        } else {
+            restartGame()
+        }
     }
 
     func startGame() {
