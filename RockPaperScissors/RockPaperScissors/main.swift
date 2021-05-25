@@ -13,10 +13,17 @@ class RockPaperScissor {
     var userHand = 0
     var changeUserHand = 0
     
-    enum HandType: Int {
+    
+    
+    enum HandType: Int, CustomStringConvertible {
+        case end = 0
         case scissors = 1
         case rock = 2
         case paper = 3
+        
+        var description: String {
+            return "\(self.rawValue)"
+        }
     }
     
     enum GameResultMessage: String, CustomStringConvertible {
@@ -60,25 +67,24 @@ class RockPaperScissor {
         }
     }
     
-    // 사용자 입력을 받아서, String 값을 Int로 변환후 반환
+    //사용자 입력을 받아서, String을 Int로 변환후 반환
     private func getUserHand() -> Int {
-        if let userHand = readLine() {
-            if let changeUserHand = Int(userHand) {
-               checkUserInput(with: changeUserHand)
-            }else {
-                restartGame()
-            }
+        if let userHand = readLine(), let changeUserHand = Int(userHand) {
+            checkUserInput(with: changeUserHand)
+        } else {
+            restartGame()
         }
         return changeUserHand
     }
-    
+
     // 입력값 타입별 분류
     private func checkUserInput(with changeUserHand: Int) {
-        if 1..<4 ~= changeUserHand {
+        switch changeUserHand {
+        case HandType.rock.rawValue, HandType.scissors.rawValue, HandType.paper.rawValue:
             showGameResult(computerHand: randomComputerHand(), userHand: changeUserHand)
-        } else if changeUserHand == 0 {
+        case HandType.end.rawValue:
             endGame()
-        } else {
+        default:
             restartGame()
         }
     }
