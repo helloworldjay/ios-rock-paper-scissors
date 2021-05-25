@@ -13,8 +13,6 @@ class RockPaperScissor {
     var userHand = 0
     var changeUserHand = 0
     
-    
-    
     enum HandType: Int, CustomStringConvertible {
         case end = 0
         case scissors = 1
@@ -68,13 +66,12 @@ class RockPaperScissor {
     }
     
     //사용자 입력을 받아서, String을 Int로 변환후 반환
-    private func getUserHand() -> Int {
-        if let userHand = readLine(), let changeUserHand = Int(userHand) {
-            checkUserInput(with: changeUserHand)
-        } else {
+    private func inputUserHand() {
+        guard let userHand = readLine(), let changeUserHand = Int(userHand) else {
             restartGame()
+            return
         }
-        return changeUserHand
+        checkUserInput(with: changeUserHand)
     }
 
     // 입력값 타입별 분류
@@ -91,7 +88,7 @@ class RockPaperScissor {
 
     func startGame() {
         print("가위(1), 바위(2), 보(3)! <종료:0> : ", terminator: "")
-        getUserHand()
+        inputUserHand()
     }
 }
 
