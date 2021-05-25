@@ -46,7 +46,7 @@ class RockPaperScissor {
         return computerHand
     }
     
-    private func runTheGame(computerHand: Int, userHand: Int) {
+    private func showGameResult(computerHand: Int, userHand: Int) {
         
         let result = (3 + userHand - computerHand) % 3
         
@@ -64,7 +64,7 @@ class RockPaperScissor {
     private func getUserHand() -> Int {
         if let userHand = readLine() {
             if let changeUserHand = Int(userHand) {
-               gameCase(with: changeUserHand)
+               checkUserInput(with: changeUserHand)
             }else {
                 restartGame()
             }
@@ -73,9 +73,9 @@ class RockPaperScissor {
     }
     
     // 입력값 타입별 분류
-    private func gameCase(with changeUserHand: Int) {
+    private func checkUserInput(with changeUserHand: Int) {
         if 1..<4 ~= changeUserHand {
-            runTheGame(computerHand: randomComputerHand(), userHand: changeUserHand)
+            showGameResult(computerHand: randomComputerHand(), userHand: changeUserHand)
         } else if changeUserHand == 0 {
             endGame()
         } else {
