@@ -8,10 +8,8 @@
 import Foundation
 
 class RockPaperScissor {
-    var userSelect = ""
     var computerHand = 0
     var userHand = 0
-    var changeUserHand = 0
     
     enum HandType: Int, CustomStringConvertible {
         case end = 0
